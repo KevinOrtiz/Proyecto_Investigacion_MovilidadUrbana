@@ -44,10 +44,11 @@ def getFollowerList(userID,api,ty):
     try:
         nameFile = 'follower/' + str(userID) + '-' + 'follower' + '.txt'
         print nameFile
-        for follow in limit_handled(ty.Cursor(api.followers,screen_name=str(userID)).pages()):
-            print follow
-            valueFollow = str(follow) + '\n'
-            saveInformationUserFile(nameFile,valueFollow)
+        for follow in limit_handled(ty.Cursor(api.followers,screen_name=str(userID)).items()):
+            print follow.id
+            if follow.friends_count <= 1000:
+                valueFollow = str(follow.id) + '\n'
+                saveInformationUserFileTextPlane(nameFile,valueFollow)
     except Exception as ex:
         print(type(ex))
         print(ex)
