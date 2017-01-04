@@ -20,11 +20,22 @@ def limit_handled(cursor):
                 raise
 
 def getUserinformationtimeline(userID,api,count):
+    dictUsuario = {}
     Filename = 'timeline/' + str(userID) + '-timeline' + '.json'
-    for statuses in limit_handled(ty.Cursor(api.user_timeline,screen_name=str(userID),count=count).pages()):
+    for statuses in limit_handled(ty.Cursor(api.home_timeline,screen_name=str(userID),count=count).pages()):
         for status in statuses:
-            status = str(status) + '\n'
-            saveInformationUserFile(Filename,status)
+            dictUsuario["id"]=status.id
+            dictUsuario["screen_name"]=status.screen_name
+            dictUsuario["text"]=status.text
+            dictUsuario["created_at"]=str(status.created_at)
+            dictUsuario["geo"]=status.geo
+            dictUsuario["coordenadas"]=status.coordinates
+            print dictUsuario["id"]
+            print dictUsuario["text"]
+            print dictUsuario["created_at"]
+            print dictUsuario["geo"]
+            print dictUsuario["coordenadas"]
+            saveInformationUserFile(Filename,dictUsuario)
 
 
 
@@ -67,7 +78,7 @@ def getUserFileList(nombreArchivo):
 def saveInformationUserFile(namefile,diccionarioInformacion):
     try:
         with open(namefile,'a+') as f:
-            js.dump(diccionarioInformacion,f,sort_keys= True, indent=4,ensure_ascii=True,separators=(',', ':'))
+            f.write(js.dumps(dict(diccionarioInformacion), indent=4, ensure_ascii=False,sort_keys=True,separators=(',',':')).encode('utf8'))
     except  IOError:
         print "error al guardar informacion en el archivo"
 
@@ -90,7 +101,7 @@ if __name__ == '__main__':
     print api
     opcion = input()
     print opcion
-    lista = getUserFileList("screen_name.txt")
+    lista = getUserFileList("screen_name_copy.txt")
     print lista
     if (opcion==1):
         for i in lista:
