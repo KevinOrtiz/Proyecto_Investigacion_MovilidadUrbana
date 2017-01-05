@@ -101,7 +101,7 @@ if __name__ == '__main__':
     print api
     opcion = input()
     print opcion
-    lista = getUserFileList("screen_name_copy.txt")
+    lista = getUserFileList("screen_name-copy.txt")
     print lista
     if (opcion==1):
         for i in lista:
